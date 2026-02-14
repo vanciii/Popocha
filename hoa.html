@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>si ves esto me debes un beso</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background-color: #ffb6c1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+#contenedor {
+    text-align: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Pantalla inicial */
+#pantallaInicial {
+    text-align: center;
+}
+
+#continuar {
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Pantalla pregunta */
+#pantallaPregunta {
+    display: none;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+/* Subtexto debajo de la pregunta */
+.subtextoPregunta {
+    font-size: 14px;
+    opacity: 0.5;
+    margin-top: -10px;
+}
+
+#imagenInicial {
+    margin-top: 15px;
+    width: 250px;
+    border-radius: 15px;
+}
+
+.botones {
+    margin-top: 20px;
+    position: relative;
+    height: 150px;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    position: absolute;
+    transition: left 0.3s ease, top 0.3s ease;
+}
+
+#si {
+    background-color: #4CAF50;
+    color: white;
+    left: 40%;
+    top: 60px;
+}
+
+#no {
+    background-color: #f44336;
+    color: white;
+    left: 55%;
+    top: 60px;
+}
+
+#resultado img {
+    margin-top: 20px;
+    width: 250px;
+    border-radius: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="contenedor">
+
+    <!-- Pantalla inicial -->
+    <div id="pantallaInicial">
+        <h1>Hoa Popochaaaa! Una pregunta...</h1>
+        <button id="continuar">¿Ah?</button>
+    </div>
+
+    <!-- Pantalla pregunta -->
+    <div id="pantallaPregunta">
+        <h1>¿Quieres ser mi San Valentín? 💖</h1>
+        <p class="subtextoPregunta">Así sea solo arrunchis, ver pelis y que uste me haga comida :)</p>
+
+        <img id="imagenInicial" src="hoa.png">
+
+        <div class="botones">
+            <button id="si">Sí</button>
+            <button id="no">No</button>
+        </div>
+
+        <div id="resultado"></div>
+    </div>
+
+</div>
+
+<script>
+const continuar = document.getElementById("continuar");
+const pantallaInicial = document.getElementById("pantallaInicial");
+const pantallaPregunta = document.getElementById("pantallaPregunta");
+
+const botonNo = document.getElementById("no");
+const botonSi = document.getElementById("si");
+const resultado = document.getElementById("resultado");
+const imagenInicial = document.getElementById("imagenInicial");
+
+let intentosNo = 0;
+
+// Mostrar pregunta
+continuar.addEventListener("click", function() {
+    pantallaInicial.style.display = "none";
+    pantallaPregunta.style.display = "block";
+});
+
+// Movimiento inteligente del botón NO
+document.addEventListener("mousemove", function(e) {
+
+    if (pantallaPregunta.style.display !== "block") return;
+    if (intentosNo < 1) return;
+
+    const rect = botonNo.getBoundingClientRect();
+
+    const distanciaX = e.clientX - (rect.left + rect.width / 2);
+    const distanciaY = e.clientY - (rect.top + rect.height / 2);
+    const distancia = Math.sqrt(distanciaX * distanciaX + distanciaY * distanciaY);
+
+    if (distancia < 120) {
+
+        const margen = 20;
+
+        const maxX = window.innerWidth - rect.width - margen;
+        const maxY = window.innerHeight - rect.height - margen;
+
+        const nuevoX = Math.random() * maxX;
+        const nuevoY = Math.random() * maxY;
+
+        botonNo.style.left = nuevoX + "px";
+        botonNo.style.top = nuevoY + "px";
+    }
+});
+
+// Cuando presiona NO
+botonNo.addEventListener("click", function() {
+    intentosNo++;
+
+    imagenInicial.style.display = "none";
+
+    resultado.innerHTML = `
+        <h2>oigan</h2>
+        <img src="barvo.jpg">
+    `;
+});
+
+// Cuando presiona SÍ
+botonSi.addEventListener("click", function() {
+
+    imagenInicial.style.display = "none";
+
+    resultado.innerHTML = `
+        <h2>esoooo! Te amooooooo popocha ❤️</h2>
+	<p class="textoExtra">Mañana nos vemooos 💕 Ojalá me elijas toda la vida</p>
+        <img src="feli.jpg">
+    `;
+
+    botonNo.style.display = "none";
+    botonSi.style.display = "none";
+});
+</script>
+
+</body>
+</html>
